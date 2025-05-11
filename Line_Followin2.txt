@@ -1,0 +1,403 @@
+#define IR1 7
+#define IR2 8
+#define IR3 9
+#define IR4 10
+#define IR5 11
+#define IR6 12
+#define IR7 13
+#define Motor11 A2 //Right side... dakunu pasa Wheels
+#define Motor12 A1 //Right side
+#define Motor21 3  //Left side....wam pasa wheels
+#define Motor22 4  //Left side
+#define PWMmotor1 5 //Right side... dakunu pasa Wheels
+#define PWMmotor2 6 //Left side....wam pasa wheels
+
+int XjunctionCount=0;
+int Xcount[1]={0};
+
+int LeftTjunctioncount=0;
+int LeftTjunctions[1]={0};
+
+int IR1read=0;
+int IR2read=0;
+int IR3read=0;
+int IR4read=0;
+int IR5read=0;
+int IR6read=0;
+int IR7read=0;
+
+void setup() {
+
+ pinMode(IR1,INPUT);
+ pinMode(IR2,INPUT);
+ pinMode(IR3,INPUT);
+ pinMode(IR4,INPUT);
+ pinMode(IR5,INPUT);
+ pinMode(IR6,INPUT);
+ pinMode(IR7,INPUT);
+  
+  pinMode(Motor11,OUTPUT);
+  pinMode(Motor12,OUTPUT);
+  pinMode(Motor21,OUTPUT);
+  pinMode(Motor22,OUTPUT);
+  pinMode(PWMmotor1,OUTPUT);
+  pinMode(PWMmotor2,OUTPUT);
+
+ Serial.begin(9600);
+}
+
+void loop() {
+
+   scan();
+  
+  /*Forward...........................................................*/
+  if (IR1read ==1 && IR2read ==1 && IR3read == 0 && IR4read == 0 && IR5read == 0 && IR6read == 1 && IR7read == 1 ) {//ok
+    forward();
+  }
+
+  if (IR1read ==1 && IR2read ==1 && IR3read == 0 && IR4read == 0 && IR5read == 0 && IR6read == 1 && IR7read == 0 ) {//ok
+    forward();
+     
+  }
+  if (IR1read ==1 && IR2read ==1 && IR3read == 1 && IR4read == 0 && IR5read == 1 && IR6read == 1 && IR7read == 1 ) {//ok
+    forward();
+  }
+  if (IR1read ==1 && IR2read ==1 && IR3read == 1 && IR4read == 1 && IR5read == 0 && IR6read == 1 && IR7read == 1 ) {//ok
+    forward();
+  }
+
+  
+  if (IR1read ==1 && IR2read ==1 && IR3read == 0 && IR4read == 1 && IR5read == 1 && IR6read == 1 && IR7read == 1 ) {//ok
+    left();
+     delay(50);
+  }
+
+  /*Turn Left..........................................................*/
+  if (IR1read ==0 && IR2read ==0 && IR3read == 0 && IR4read == 0 && IR5read == 0 && IR6read == 1 && IR7read == 1) {//ok
+    int count =(Xcount[0]);
+    if(count==6){
+      forward();
+      }
+    else{left();
+    delay(475);}
+  }
+ /* if (IR1read ==0 && IR2read ==0 && IR3read == 0 && IR4read == 0 && IR5read == 0 && IR6read == 1 && IR7read == 1) {//ok
+    left();
+    delay(20);
+  }*/
+  if (IR1read ==1 && IR2read ==0 && IR3read == 0 && IR4read == 0 && IR5read == 1&& IR6read == 1&& IR7read == 1) {//ok
+    left();
+    delay(50);
+  }
+  if (IR1read ==1 && IR2read ==1 && IR3read == 0 && IR4read == 0 && IR5read == 1 && IR6read == 1&& IR7read == 1) {//ok
+    left();
+    delay(50);
+  }
+  if (IR1read ==0 && IR2read ==0 && IR3read == 0 && IR4read == 1 && IR5read == 1 && IR6read == 1&& IR7read == 1) {//ok
+    left();
+    delay(50);
+  }
+  if (IR1read == 0 && IR2read == 0 && IR3read == 1 && IR4read == 1 && IR5read == 1 && IR6read == 1 && IR7read == 1) {//ok
+    left();
+    delay(50);
+  }
+  if (IR1read == 0 && IR2read == 1 && IR3read == 1 && IR4read == 1 && IR5read == 1&& IR6read == 1&& IR7read == 1) {//ok
+    left();
+    delay(20);
+  }
+   if (IR1read ==1 && IR2read ==0 && IR3read == 0 && IR4read == 0 && IR5read == 0 && IR6read == 1 && IR7read == 1) {//ok
+    left();
+    delay(20);
+  }
+  if (IR1read ==1 && IR2read ==0 && IR3read == 0 && IR4read == 1 && IR5read == 1&& IR6read == 1&& IR7read == 1) {//ok
+    left();
+    delay(20);
+  }
+  if (IR1read ==0 && IR2read ==0 && IR3read == 0 && IR4read == 0 && IR5read == 1&& IR6read == 1&& IR7read == 1) {//ok
+    left();
+    delay(20);
+  }
+  
+  
+  
+  
+  
+  
+  /* Turn Right...........................................................*/
+  
+  if (IR1read ==1 && IR2read ==1 && IR3read == 0 && IR4read == 0 && IR5read == 0 && IR6read == 0 && IR7read == 0) {//ok
+   // right();
+   // delay(475);
+   CountingLeftTjunctions();
+   
+  } 
+  if (IR1read ==1 && IR2read ==1 && IR3read == 0 && IR4read == 0 && IR5read == 0 && IR6read == 0 && IR7read == 1) {//ok
+    right();
+    delay(20);
+  } 
+  if (IR1read ==1 && IR2read ==1 && IR3read == 1 && IR4read == 0 && IR5read == 0 && IR6read == 0 && IR7read == 0) {//ok
+    right();
+    delay(20);
+  }
+  if (IR1read ==1 && IR2read ==1 && IR3read ==1 && IR4read == 1 && IR5read == 0 && IR6read == 0 && IR7read == 0) {//ok
+    right();
+    delay(25);
+  }
+  if (IR1read ==1 && IR2read ==1 && IR3read == 1 && IR4read == 0 && IR5read == 0 && IR6read == 0 && IR7read == 1) {//ok
+    right();
+    delay(20);
+  }
+  if (IR1read ==1 && IR2read ==1 && IR3read == 1 && IR4read == 1 && IR5read == 1 && IR6read == 0 && IR7read == 0) {//ok
+    right();
+    delay(20);
+  }
+  if (IR1read ==1 && IR2read ==1 && IR3read == 1 && IR4read == 1 && IR5read == 1 && IR6read == 1 && IR7read == 0) {//ok
+    right();
+    delay(50);
+  }
+  if (IR1read ==1 && IR2read ==1 && IR3read == 1 && IR4read == 1 && IR5read == 0 && IR6read == 0 && IR7read == 1) {//ok
+    right();
+    delay(20);
+  }
+   if (IR1read ==1 && IR2read ==1 && IR3read == 1 && IR4read == 0 && IR5read == 0 && IR6read == 1 && IR7read == 1) {//ok
+    right();
+    delay(20);
+  }
+  
+  /*Stoping.............................................................. */
+  
+  if (IR1read ==1 && IR2read ==1 && IR3read == 1 && IR4read == 1 && IR5read == 1&& IR6read == 1 && IR7read == 1) {//ok
+    //forward();
+    // delay(20);
+    breake();
+    delay(20);
+   
+  }
+
+
+if (IR1read ==0 && IR2read ==0 && IR3read == 0 && IR4read == 0 && IR5read == 0 && IR6read == 0 && IR7read == 0) {//ok
+     CountingXJunctions();
+  } 
+
+  
+  
+  
+  else {
+    
+    
+    breake();
+    delay(20);
+  }
+}
+
+void scan() {
+  IR1read = digitalRead(IR1);
+  IR2read = digitalRead(IR2);
+  IR3read = digitalRead(IR3);
+  IR4read = digitalRead(IR4);
+  IR5read = digitalRead(IR5);
+  IR6read = digitalRead(IR6);
+  IR7read = digitalRead(IR7);
+  
+  
+      Serial.print(digitalRead(IR1));
+      Serial.print(digitalRead(IR2));
+      Serial.print(digitalRead(IR3));
+      Serial.print(digitalRead(IR4));
+      Serial.print(digitalRead(IR5));
+      Serial.print(digitalRead(IR6));
+      Serial.print(digitalRead(IR7));
+      Serial.println("  ");
+}
+
+void forward() {
+    digitalWrite(Motor11,HIGH);
+    digitalWrite(Motor12,LOW);
+    digitalWrite(Motor21,HIGH);
+    digitalWrite(Motor22,LOW);
+    analogWrite(PWMmotor1,120);
+    analogWrite(PWMmotor2,120);
+    delay(10);
+}
+
+void breake() {
+    digitalWrite(Motor11,LOW);
+    digitalWrite(Motor12,LOW);
+    digitalWrite(Motor21,LOW);
+    digitalWrite(Motor22,LOW);
+}
+
+void left() {
+    digitalWrite(Motor11,HIGH);
+    digitalWrite(Motor12,LOW);
+    digitalWrite(Motor21,HIGH);
+    digitalWrite(Motor22,LOW);
+    analogWrite(PWMmotor1,120);
+    analogWrite(PWMmotor2,0);
+    
+}
+void right() {
+    digitalWrite(Motor11,HIGH);
+    digitalWrite(Motor12,LOW);
+    digitalWrite(Motor21,HIGH);
+    digitalWrite(Motor22,LOW);
+    analogWrite(PWMmotor1,0);
+    analogWrite(PWMmotor2,120);
+}
+
+void CountingXJunctions(){
+  int i=0;
+  while(i<10) {
+  int count =(Xcount[0]);
+  count=count+1;
+  Xcount[0]=count;
+  
+  Serial.println("  ");
+  Serial.print("count :");
+  Serial.print(count);
+  Serial.println("  ");
+  
+  int StartX=(LeftTjunctions[0]);
+ if(StartX>1){
+  
+  if(count == 1){
+    forward();
+    delay(100);
+    }
+
+ else if(count == 2){
+    forward();
+    delay(100);
+    }
+  
+  else if(count == 3){
+   forward();
+    delay(100);
+    }
+
+  else if(count == 4){
+    forward();
+    delay(100);
+   } 
+
+ else if(count == 5){
+    left();
+    delay(475);
+    //forward();
+    //delay(50);
+    
+    }
+ else if(count == 6){
+    left();
+    delay(475);
+    //forward();
+    //delay(50);
+    
+    }
+ else if(count == 7){
+    forward();
+    delay(100);
+   }    
+ else if(count == 8){
+    forward();
+    delay(100);
+   } 
+ else if(count == 9){
+    forward();
+    delay(100);
+   }
+   else if(count ==10){
+    right();
+    delay(475);
+     forward();
+    delay(50);
+    }  
+ else if(count == 11){
+   forward();
+   delay(100);
+    // right();
+    //delay(475);
+   }
+ else if(count == 12){
+  forward();
+ delay(100);
+   //right();
+   // delay(475);
+   }
+   else if(count == 13){
+    right();
+    delay(475);
+    //forward();
+   //delay(100);
+   }
+   else if(count == 14){
+   forward();
+ delay(100);
+    // right();
+   // delay(475);
+   }
+   else if(count == 15){
+  // forward();
+ //delay(100);
+     right();
+    delay(475);
+   }
+   else if(count == 16){
+    breake();
+    
+   }         
+ else{delay(100);}
+  
+  break;
+    }
+  }
+ }
+
+
+void CountingLeftTjunctions(){//Wam pasata harim...
+  int i=0;
+  while(i<10) {
+  int count =(LeftTjunctions[0]);
+  count=count+1;
+  LeftTjunctions[0]=count;
+  
+  Serial.println("  ");
+  Serial.print("countLeftTs :");
+  Serial.print(count);
+  Serial.println("  ");
+  
+  if(count == 1){
+    forward();
+    delay(150);
+    }
+  else if(count == 2){
+    right();
+    delay(500);
+    }
+  else if(count == 3){
+    forward();
+    delay(150);
+    }
+  else{delay(20);}
+  
+  break;
+  }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
